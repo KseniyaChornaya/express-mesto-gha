@@ -2,17 +2,18 @@
   "name": "express-mesto-gha",
   "version": "1.0.0",
   "description": "# Проект Mesto фронтенд + бэкенд",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "lint": "npx eslint .",
-    "start": "nodemon app.js"
+    "start": "nodemon app.js",
+    "dev": "nodemon app.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/KseniyaChornaya/express-mesto-gha.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Kseniya Chornaya",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/KseniyaChornaya/express-mesto-gha.git/issues"
