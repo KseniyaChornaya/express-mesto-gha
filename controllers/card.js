@@ -51,40 +51,32 @@ exports.deleteCards = (req, res, next) => {
     });
 };
 
-// const handleLike = (req, res, next, options) => {
-//   const action = options.addLike ? '$addToSet' : '$pull';
-//   Card.findById(req.params.cardId)
-//     .then((card) => {
-//       if (!card) {
-//         throw new NotFoundError('Карточка не найдена');
-//       }
-//       return Card.findByIdAndUpdate(
-//         req.params.cardId,
-//         { [action]: { likes: req.user._id } },
-//         { new: true }
-//       ).then((updatedCard) => {
-//         res.send(updatedCard);
-//       });
-//     })
-//     .catch((err) => {
-//       if (err.name === 'CastError') {
-//         next(new BadRequestError('Невалидный id карточки'));
-//       } else {
-//         next(err);
-//       }
-//     });
-// };
-
-exports.likeCard = (req, res) =>
+exports.likeCard = (req, res, next) => {
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $addToSet: { likes: req.user._id } },
     { new: true }
-  );
+  )
+    .then((card) => {
+      if (!card) {
+        throw new NotFoundError('Карточка не найдена');
+      }
+      res.send(card);
+    })
+    .catch(next);
+};
 
-exports.dislikeCard = (req, res) =>
+exports.dislikeCard = (req, res, next) => {
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $pull: { likes: req.user._id } },
     { new: true }
-  );
+  )
+    .then((card) => {
+      if (!card) {
+        throw new NotFoundError('Карточка не найдена');
+      }
+      res.send(card);
+    })
+    .catch(next);
+};
