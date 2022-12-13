@@ -64,7 +64,13 @@ exports.likeCard = (req, res, next) => {
       }
       res.send(card);
     })
-    .catch(next);
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        next(new BadRequestError('Невалидный id карточки'));
+      } else {
+        next(err);
+      }
+    });
 };
 
 exports.dislikeCard = (req, res, next) => {
@@ -79,5 +85,11 @@ exports.dislikeCard = (req, res, next) => {
       }
       res.send(card);
     })
-    .catch(next);
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        next(new BadRequestError('Невалидный id карточки'));
+      } else {
+        next(err);
+      }
+    });
 };
