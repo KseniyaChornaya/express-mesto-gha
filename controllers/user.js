@@ -28,7 +28,7 @@ module.exports.getUsers = (_, res, next) => {
     .catch(next);
 };
 
-module.exports.getUser = (req, res, next) => {
+module.exports.getUserById = (req, res, next) => {
   User.findById(req.params.id)
     .then((user) => {
       if (!user) {
@@ -37,7 +37,7 @@ module.exports.getUser = (req, res, next) => {
       res.status(200).send(user);
     })
     .catch((err) => {
-      if (err.message === 'ValidationError') {
+      if (err.message === 'CastError') {
         next(new BadRequestError('Невалидный формат id пользователя'));
       } else {
         next(err);
@@ -45,16 +45,22 @@ module.exports.getUser = (req, res, next) => {
     });
 };
 
-module.exports.getUserId = (req, res, next) => {
-  User.findOne({ _id: req.user._id })
-    .then((user) => {
-      if (!user) {
-        throw new NotFoundError('Пользователь не найден');
-      }
-      res.send(user);
-    })
-    .catch(next);
-};
+// module.exports.getUserId = (req, res, next) => {
+//   User.findOne({ _id: req.user._id })
+//     .then((user) => {
+//       if (!user) {
+//         throw new NotFoundError('Пользователь не найден');
+//       }
+//       res.send(user);
+//     })
+//     .catch((err) => {
+//       if (err.message === 'ValidationError') {
+//         next(new BadRequestError('Невалидный формат id пользователя'));
+//       } else {
+//         next(err);
+//       }
+//     });
+// };
 
 const updateUser = (req, res, next, userData) => {
   User.findByIdAndUpdate(req.user._id, userData, {
