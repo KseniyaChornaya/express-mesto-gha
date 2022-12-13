@@ -34,10 +34,10 @@ module.exports.getUser = (req, res, next) => {
       if (!user) {
         throw new NotFoundError('Пользователь не найден');
       }
-      res.send(user);
+      res.status(200).send(user);
     })
     .catch((err) => {
-      if (err.message === 'CastError') {
+      if (err.message === 'ValidationError') {
         next(new BadRequestError('Невалидный формат id пользователя'));
       } else {
         next(err);
