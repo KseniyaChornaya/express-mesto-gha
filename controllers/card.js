@@ -4,10 +4,11 @@ const ForbiddenError = require('../errors/forbidden-error');
 const NotFoundError = require('../errors/not-found-error');
 
 exports.createCards = (req, res, next) => {
+  console.log(req.user._id);
   Card.create({
     name: req.body.name,
     link: req.body.link,
-    owner: req.user._id,
+    // owner: req.user._id,
   })
     .then((card) => {
       res.send(card);
