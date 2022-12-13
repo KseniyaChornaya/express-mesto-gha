@@ -11,10 +11,10 @@ app.use((req, res, next) => {
   req.user = {
     _id: '6396fbecf369fb5dc2b758ec',
   };
-
   next();
 });
 app.use(routes);
+
 async function connect() {
   await mongoose.connect(MONGO_URL);
   console.log(`App connect db ${MONGO_URL}`);

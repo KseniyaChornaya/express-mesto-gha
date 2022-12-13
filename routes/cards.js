@@ -6,7 +6,6 @@ const {
   dislikeCard,
   likeCard,
 } = require('../controllers/card');
-
 router.get('/', getCards);
 router.post('/', createCards);
 router.delete('/:cardId', deleteCards);

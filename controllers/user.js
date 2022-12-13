@@ -45,6 +45,17 @@ module.exports.getUser = (req, res, next) => {
     });
 };
 
+module.exports.getUserId = (req, res, next) => {
+  User.findOne({ _id: req.user._id })
+    .then((user) => {
+      if (!user) {
+        throw new NotFoundError('Пользователь не найден');
+      }
+      res.send(user);
+    })
+    .catch(next);
+};
+
 const updateUser = (req, res, next, userData) => {
   User.findByIdAndUpdate(req.user._id, userData, {
     new: true,
