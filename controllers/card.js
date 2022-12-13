@@ -8,7 +8,7 @@ exports.createCards = (req, res, next) => {
   Card.create({
     name: req.body.name,
     link: req.body.link,
-    // owner: req.user._id,
+    owner: req.user._id,
   })
     .then((card) => {
       res.send(card);
