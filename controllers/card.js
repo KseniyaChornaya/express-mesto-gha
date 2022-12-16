@@ -32,10 +32,8 @@ exports.getCards = (_, res, next) => {
 
 exports.deleteCards = (req, res, next) => {
   Card.findById(req.params.cardId)
+    .orFail(new NotFoundError('Карточка не найдена'))
     .then((card) => {
-      if (!card) {
-        throw new NotFoundError('Карточка не найдена');
-      }
       if (card.owner.toString() !== req.user._id) {
         throw new ForbiddenError('Невозможно удалить чужие карточки');
       }
@@ -45,7 +43,7 @@ exports.deleteCards = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new BadRequestError('Невалидный id карточки'));
+        next(new BadRequestError('Невалидный формат id карточки'));
       } else {
         next(err);
       }

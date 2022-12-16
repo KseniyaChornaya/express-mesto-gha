@@ -33,9 +33,6 @@ module.exports.getUserById = (req, res, next) => {
   User.findById(req.params.userId)
     .orFail(new NotFoundError('Пользователь не найден'))
     .then((user) => {
-      // if (!user) {
-      //   throw new NotFoundError('Пользователь не найден');
-      // }
       res.status(200).send(user);
     })
     .catch((err) => {
@@ -46,23 +43,6 @@ module.exports.getUserById = (req, res, next) => {
       }
     });
 };
-
-// module.exports.getUserId = (req, res, next) => {
-//   User.findOne({ _id: req.user._id })
-//     .then((user) => {
-//       if (!user) {
-//         throw new NotFoundError('Пользователь не найден');
-//       }
-//       res.send(user);
-//     })
-//     .catch((err) => {
-//       if (err.message === 'ValidationError') {
-//         next(new BadRequestError('Невалидный формат id пользователя'));
-//       } else {
-//         next(err);
-//       }
-//     });
-// };
 
 const updateUser = (req, res, next, userData) => {
   User.findByIdAndUpdate(req.user._id, userData, {
