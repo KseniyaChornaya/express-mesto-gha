@@ -31,14 +31,15 @@ module.exports.getUsers = (_, res, next) => {
 
 module.exports.getUserById = (req, res, next) => {
   User.findById(req.params.userId)
+    .orFail(new NotFoundError('Пользователь не найден'))
     .then((user) => {
-      if (!user) {
-        throw new NotFoundError('Пользователь не найден');
-      }
+      // if (!user) {
+      //   throw new NotFoundError('Пользователь не найден');
+      // }
       res.status(200).send(user);
     })
     .catch((err) => {
-      if (err.message === 'CastError') {
+      if (err instanceof mongoose.Error.CastError) {
         next(new BadRequestError('Невалидный формат id пользователя'));
       } else {
         next(err);
