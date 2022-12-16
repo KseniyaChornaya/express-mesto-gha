@@ -1,6 +1,7 @@
 const User = require('../models/user');
 const BadRequestError = require('../errors/bad-request-error');
 const NotFoundError = require('../errors/not-found-error');
+const { default: mongoose } = require('mongoose');
 
 module.exports.createUser = (req, res, next) => {
   User.create({
@@ -29,7 +30,7 @@ module.exports.getUsers = (_, res, next) => {
 };
 
 module.exports.getUserById = (req, res, next) => {
-  User.findById(req.params.id)
+  User.findById(req.params.userId)
     .then((user) => {
       if (!user) {
         throw new NotFoundError('Пользователь не найден');

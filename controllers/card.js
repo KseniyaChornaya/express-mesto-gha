@@ -87,7 +87,7 @@ exports.dislikeCard = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new BadRequestError('Невалидный id карточки'));
+        next(new BadRequestError('Некорректный id карточки'));
       } else {
         next(err);
       }
