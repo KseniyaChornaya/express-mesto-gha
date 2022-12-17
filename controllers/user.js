@@ -1,7 +1,7 @@
+const { default: mongoose } = require('mongoose');
 const User = require('../models/user');
 const BadRequestError = require('../errors/bad-request-error');
 const NotFoundError = require('../errors/not-found-error');
-const { default: mongoose } = require('mongoose');
 
 module.exports.createUser = (req, res, next) => {
   User.create({
@@ -24,7 +24,7 @@ module.exports.createUser = (req, res, next) => {
 module.exports.getUsers = (_, res, next) => {
   User.find({})
     .then((users) => {
-      res.status(200).send(users);
+      res.send(users);
     })
     .catch(next);
 };

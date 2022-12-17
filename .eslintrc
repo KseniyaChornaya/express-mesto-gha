@@ -5,13 +5,6 @@
     "commonjs": true
   },
   "extends": ["airbnb-base"],
-
-  "overrides": [],
-  "parserOptions": {
-    "ecmaVersion": "latest",
-    "sourceType": "module"
-  },
-  "plugins": ["react"],
   "rules": {
     "no-underscore-dangle": [
       "error",
