@@ -6,7 +6,7 @@ const cardsRoutes = require('./cards');
 router.use('/users', usersRoutes);
 router.use('/cards', cardsRoutes);
 router.use('*', () => {
-  throw new NotFoundError('Страница не нейдена');
+  throw new NotFoundError('Страница не найдена');
 });
 
 module.exports = router;
