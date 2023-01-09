@@ -1,11 +1,10 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
+const { errors } = require('celebrate');
 const routes = require('./routes/index');
-const { createUser, login } = require('./controllers/user');
-const auth = require('./middlewares/auth');
-const { validateUserLogin, validateUser } = require('./utils/validations/user-validation');
 const errorHandler = require('./middlewares/error-handler');
+
 require('dotenv').config();
 
 const { PORT = 3000, MONGO_URL = 'mongodb://localhost:27017/mestodb' } = process.env;
@@ -19,9 +18,8 @@ app.use(express.json());
 //   };
 //   next();
 // });
-app.use(auth, routes);
-app.post('/signin', validateUserLogin, login);
-app.post('/signup', validateUser, createUser);
+app.use(routes);
+
 async function connect() {
   await mongoose.connect(MONGO_URL);
 
@@ -29,5 +27,5 @@ async function connect() {
 }
 
 connect();
-
+app.use(errors());
 app.use(errorHandler);
