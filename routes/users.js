@@ -5,7 +5,7 @@ const {
   getUserMe,
   updateUser,
 } = require('../controllers/user');
-const { validateUserId, validateUserInfo, validateUserAvatar} = require('../utils/validations/user-validation');
+const { validateUserId, validateUserInfo, validateUserAvatar } = require('../utils/validations/user-validation');
 
 router.get('/', getUsers);
 router.get('/:userId', validateUserId, getUserById);

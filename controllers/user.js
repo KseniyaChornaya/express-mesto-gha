@@ -1,52 +1,50 @@
 const bcrypt = require('bcryptjs');
+
 const jwt = require('jsonwebtoken');
+
 const { JWT_SECRET, NODE_ENV } = process.env;
-const { default: mongoose } = require('mongoose');
 const User = require('../models/user');
 // const BadRequestError = require('../errors/bad-request-error');
 const NotFoundError = require('../errors/not-found-error');
 const ConflictError = require('../errors/conflict-error');
 
-module.exports.login = (req, res, next) => {
-  return User.findOne(req.body.email).select('+password')
-    .then((user) => {
-      const userToken = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'dev_secret', { expiresIn: '7d' });
-      // res.cookie('token', userToken, {
-      //   maxAge: 900000000, httpOnly: true, sameSite: 'None', secure: true, })
-      res.send({ userToken });
-    }).catch((err) => {
-      next(err);
-    });
-};
+module.exports.login = (req, res, next) => User.findOne(req.body.email).select('+password')
+  .then((user) => {
+    const userToken = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'dev_secret', { expiresIn: '7d' });
+    // res.cookie('token', userToken, {
+    //   maxAge: 900000000, httpOnly: true, sameSite: 'None', secure: true, })
+    res.send({ userToken });
+  }).catch((err) => {
+    next(err);
+  });
 
 module.exports.createUser = (req, res, next) => {
   bcrypt
-  .hash(req.body.password, 10)
-  .then((hash) =>
-    User.create({
+    .hash(req.body.password, 10)
+    .then((hash) => User.create({
       name: req.body.name,
       about: req.body.about,
       avatar: req.body.avatar,
       email: req.body.email,
       password: hash,
     }))
-      .then((user) => {
-        res.status(201).send({
-          user: {
-            email: user.email,
-            name: user.name,
-            about: user.about,
-            avatar: user.avatar,
-          },
-        });
-      })
-      .catch((err) => {
-        if (err.code === 11000) {
-          next(new ConflictError('Такой пользователь уже существует'));
-        } else {
-          next(err);
-        }
+    .then((user) => {
+      res.status(201).send({
+        user: {
+          email: user.email,
+          name: user.name,
+          about: user.about,
+          avatar: user.avatar,
+        },
       });
+    })
+    .catch((err) => {
+      if (err.code === 11000) {
+        next(new ConflictError('Такой пользователь уже существует'));
+      } else {
+        next(err);
+      }
+    });
 };
 
 module.exports.getUsers = (_, res, next) => {
