@@ -10,7 +10,6 @@ const { validateUserId, validateUserInfo, validateUserAvatar } = require('../uti
 router.get('/', getUsers);
 router.get('/me', getUserMe);
 router.get('/:userId', validateUserId, getUserById);
-// router.post('/', validateUserInfo, createUser);
 router.patch('/me', validateUserInfo, updateUser);
 router.patch('/me/avatar', validateUserAvatar, updateUser);
 

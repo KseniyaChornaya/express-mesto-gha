@@ -5,7 +5,6 @@ require('dotenv').config();
 
 const { JWT_SECRET, NODE_ENV } = process.env;
 const User = require('../models/user');
-// const BadRequestError = require('../errors/bad-request-error');
 const NotFoundError = require('../errors/not-found-error');
 const ConflictError = require('../errors/conflict-error');
 
@@ -14,8 +13,6 @@ module.exports.login = (req, res, next) => User
   .then((user) => {
     const userToken = jwt
       .sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'dev_secret', { expiresIn: '7d' });
-      // res.cookie('token', userToken, {
-      //   maxAge: 900000000, httpOnly: true, sameSite: 'None', secure: true, })
     res
       .send({ userToken });
   }).catch((err) => {
@@ -84,18 +81,3 @@ module.exports.updateUser = (req, res, next) => {
     .then((user) => res.send(user))
     .catch(next);
 };
-
-// module.exports.updateUserInfo = (req, res, next) => {
-//   const userInfo = {
-//     name: req.body.name,
-//     about: req.body.about,
-//   };
-//   updateUser(req, res, next, userInfo);
-// };
-
-// module.exports.updateUserAvatar = (req, res, next) => {
-//   const userData = {
-//     avatar: req.body.avatar,
-//   };
-//   updateUser(req, res, next, userData);
-// };

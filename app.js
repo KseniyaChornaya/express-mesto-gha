@@ -11,12 +11,6 @@ const app = express();
 
 app.use(cookieParser());
 app.use(express.json());
-// app.use((req, res, next) => {
-//   req.user = {
-//     _id: '6396fbecf369fb5dc2b758ec',
-//   };
-//   next();
-// });
 app.use(routes);
 
 async function connect() {
