@@ -4,9 +4,6 @@ const cookieParser = require('cookie-parser');
 const { errors } = require('celebrate');
 const routes = require('./routes/index');
 const errorHandler = require('./middlewares/error-handler');
-
-require('dotenv').config();
-
 const { PORT = 3000, MONGO_URL = 'mongodb://localhost:27017/mestodb' } = process.env;
 const app = express();
 

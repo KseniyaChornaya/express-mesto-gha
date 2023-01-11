@@ -1,14 +1,13 @@
 const bcrypt = require('bcryptjs');
-
 const jwt = require('jsonwebtoken');
-
+require('dotenv').config();
 const { JWT_SECRET, NODE_ENV } = process.env;
 const User = require('../models/user');
 // const BadRequestError = require('../errors/bad-request-error');
 const NotFoundError = require('../errors/not-found-error');
 const ConflictError = require('../errors/conflict-error');
 
-module.exports.login = (req, res, next) => User.findOne(req.body.email).select('+password')
+module.exports.login = (req, res, next) => User.findUserByCredentials(req.body.email, req.body.password) 
   .then((user) => {
     const userToken = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'dev_secret', { expiresIn: '7d' });
     // res.cookie('token', userToken, {
@@ -19,8 +18,7 @@ module.exports.login = (req, res, next) => User.findOne(req.body.email).select('
   });
 
 module.exports.createUser = (req, res, next) => {
-  bcrypt
-    .hash(req.body.password, 10)
+  bcrypt.hash(req.body.password, 10)
     .then((hash) => User.create({
       name: req.body.name,
       about: req.body.about,
@@ -30,7 +28,8 @@ module.exports.createUser = (req, res, next) => {
     }))
     .then((user) => {
       res.status(201).send({
-        user: {
+        user
+        : {
           email: user.email,
           name: user.name,
           about: user.about,
