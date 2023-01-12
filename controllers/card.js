@@ -11,7 +11,9 @@ exports.createCards = (req, res, next) => {
     .then((card) => {
       res.send(card);
     })
-    .catch(next);
+    .catch((err) => {
+      next(err);
+    });
 };
 
 exports.getCards = (_, res, next) => {
@@ -19,7 +21,9 @@ exports.getCards = (_, res, next) => {
     .then((cards) => {
       res.send(cards);
     })
-    .catch(next);
+    .catch((err) => {
+      next(err);
+    });
 };
 
 exports.deleteCards = (req, res, next) => {
@@ -33,7 +37,9 @@ exports.deleteCards = (req, res, next) => {
         res.send({ message: 'Карточка удалена' });
       });
     })
-    .catch(next);
+    .catch((err) => {
+      next(err);
+    });
 };
 
 exports.likeCard = (req, res, next) => {
@@ -48,7 +54,9 @@ exports.likeCard = (req, res, next) => {
       }
       res.send(card);
     })
-    .catch(next);
+    .catch((err) => {
+      next(err);
+    });
 };
 
 exports.dislikeCard = (req, res, next) => {
@@ -63,5 +71,7 @@ exports.dislikeCard = (req, res, next) => {
       }
       res.send(card);
     })
-    .catch(next);
+    .catch((err) => {
+      next(err);
+    });
 };
