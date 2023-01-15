@@ -73,7 +73,13 @@ module.exports.getUserById = (req, res, next) => {
     .then((user) => {
       res.status(200).send(user);
     })
-    .catch(next);
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        next(new BadRequestError('Отправлены некорректные данные'));
+      } else {
+        next(err);
+      }
+    });
 };
 
 const updateUser = (req, res, next, userInfo) => {
